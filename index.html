@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Fenaka Fonadhoo Interactive Map</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div><strong>Fenaka Fonadhoo Map</strong><small>Interactive property map</small></div><button id="reset">Reset view</button></header>
+<div class="toolbar"><input id="search" placeholder="Search building / house…" autocomplete="off"><div id="results"></div></div>
+<main id="viewport"><div id="stage"><img id="map" src="fenaka-map.png" alt="Fonadhoo map"><div id="pins"></div></div></main>
+<div class="legend"><span class="red"></span> Fenaka / SS zone</div>
+<div id="popup" class="popup hidden"><button id="close">×</button><h2 id="pname"></h2><p id="ptype"></p></div>
+<script src="script.js"></script>
+</body></html>
