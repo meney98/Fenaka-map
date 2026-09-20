@@ -6,6 +6,7 @@ const places=[
  {name:'Mammage',num:'B-02',zone:'Green',x:30.2,y:75.5,c:'green'},
  {name:'Village',num:'B-03',zone:'Green',x:32.7,y:73.2,c:'green'},
  {name:'Aavaas',num:'B-06',zone:'Green',x:34.5,y:71.5,c:'green'}
+ {name:'vinares',num:'k-06',zone:'Green',x:35.6,y:76.5,c:'green'}
 ];
 function draw(){stage.style.transform=`translate(${x}px,${y}px) scale(${s})`}
 function add(p){let m=document.createElement('div');m.className='marker '+(p.c||'');m.style.left=p.x+'%';m.style.top=p.y+'%';m.dataset.label=p.name+(p.num?' · '+p.num:'');m.onclick=e=>{e.stopPropagation();show(p)};markers.appendChild(m)} places.forEach(add);
