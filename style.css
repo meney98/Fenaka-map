@@ -1,0 +1,17 @@
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#182027;background:#fff;overflow:hidden}
+header{height:82px;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid #d7dadd;background:#fff;position:relative;z-index:10}
+.brand{display:flex;align-items:baseline;gap:16px;white-space:nowrap}.brand b{font-size:32px}.brand span{font-size:24px;color:#626971;font-weight:650}
+button{border:0;border-radius:14px;background:#273239;color:#fff;font-weight:700;font-size:18px;padding:14px 20px}
+#ownerBtn{font-size:17px}.toolbar{height:98px;padding:10px 14px;background:#fff;border-bottom:1px solid #ddd;display:flex;gap:12px;align-items:center;position:relative;z-index:9}
+.searchWrap{position:relative;flex:0 0 min(340px,38vw)}#search{width:100%;height:58px;border:2px solid #b8b8b8;border-radius:16px;padding:0 16px;font-size:18px;outline:none}
+#suggestions{display:none;position:absolute;top:62px;left:0;right:0;max-height:260px;overflow:auto;background:#fff;border:1px solid #ccc;border-radius:12px;box-shadow:0 8px 25px #0002;z-index:30}
+.suggestion{padding:13px 15px;border-bottom:1px solid #eee;font-size:17px}.feeders{display:flex;gap:10px;overflow-x:auto;overscroll-behavior-x:contain;padding:4px;flex:1}.feeders button{white-space:nowrap}.feeders button.active{outline:5px solid #aebbc2}
+#mapViewport{position:relative;width:100%;height:calc(100dvh - 180px);overflow:hidden;background:#e6edf1;touch-action:none;overscroll-behavior:none;cursor:grab}
+#mapViewport.dragging{cursor:grabbing}#mapStage{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;user-select:none;-webkit-user-select:none}
+#mapImage{display:block;max-width:none;width:auto;height:auto;pointer-events:none;user-select:none;-webkit-user-drag:none}
+#markerLayer{position:absolute;inset:0;pointer-events:none}.houseMarker{position:absolute;width:26px;height:26px;border:4px solid #fff;border-radius:50%;background:#e14b42;box-shadow:0 1px 8px #0008;transform:translate(-50%,-50%);pointer-events:auto}
+.houseMarker.on{background:#57bd78}.houseMarker.highlight{width:42px;height:42px;border-width:6px;animation:pulse 1s infinite alternate}@keyframes pulse{to{transform:translate(-50%,-50%) scale(1.25)}}
+.zoomControls{position:absolute;left:18px;top:18px;display:flex;gap:8px;z-index:7}.zoomControls button{font-size:28px;padding:10px 18px;min-width:58px}.zoomControls #reset{font-size:19px}
+.hint{position:absolute;right:14px;bottom:12px;background:#ffffffdf;border-radius:10px;padding:8px 11px;font-weight:650;color:#4d5960;z-index:6}
+.panel{position:fixed;right:16px;bottom:16px;width:min(390px,calc(100vw - 32px));background:#fff;border-radius:18px;box-shadow:0 10px 35px #0004;padding:20px;z-index:50}.panel.hidden{display:none}#closePanel{float:right;padding:4px 11px}
+@media(max-width:700px){header{height:74px;padding:10px 12px}.brand{gap:8px}.brand b{font-size:26px}.brand span{font-size:18px}.toolbar{height:116px;display:block;padding:7px 8px}.searchWrap{width:100%;max-width:none}.feeders{margin-top:6px}.feeders button{padding:10px 15px;font-size:16px}#search{height:48px;font-size:16px}#mapViewport{height:calc(100dvh - 190px)}.zoomControls{top:10px;left:10px}.zoomControls button{padding:8px 14px;min-width:50px}.hint{font-size:12px}}
