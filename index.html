@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=8,user-scalable=no">
+<title>Fenaka Area Marker</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#eef1f4}
+.bar{height:112px;background:#fff;padding:8px;box-shadow:0 2px 12px #0002;position:relative;z-index:10}
+.row{display:flex;gap:7px;align-items:center}.row+ .row{margin-top:7px}
+button{border:1px solid #c6ccd3;background:#fff;border-radius:10px;padding:10px 12px;font-weight:700;font-size:14px}
+.area.active{outline:3px solid #222}.ss1{background:#ffdddd}.ss2{background:#ddffdf}.ss3{background:#ffdddd}.ss4{background:#ddffdf}
+#undo{margin-left:auto}.save{background:#1f7a3b;color:#fff;border:0}.clear{color:#b42318}
+.help{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.map{position:absolute;top:112px;left:0;right:0;bottom:0;overflow:hidden;touch-action:none;background:#fff}
+.world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.world img{display:block;width:6600px;height:5444px;user-select:none;-webkit-user-drag:none}
+svg{position:absolute;left:0;top:0;width:6600px;height:5444px;overflow:visible}
+polyline,polygon{vector-effect:non-scaling-stroke;stroke-width:5}
+.draft{fill:none;stroke:#111;stroke-dasharray:12 8}.zone{stroke:#111;fill-opacity:.28}
+.z1,.z3{fill:#ef4444}.z2,.z4{fill:#22c55e}
+.zoom{position:absolute;left:12px;top:12px;z-index:5;display:grid;gap:7px}.zoom button{width:48px;height:48px;font-size:26px;padding:0}
+.badge{position:absolute;right:10px;bottom:10px;background:#fffE;padding:8px;border-radius:8px;font-size:12px;z-index:5}
+</style>
+</head>
+<body>
+<div class="bar">
+ <div class="row">
+  <button class="area ss1 active" data-area="SS1">SS1 RED</button>
+  <button class="area ss2" data-area="SS2">SS2 GREEN</button>
+  <button class="area ss3" data-area="SS3">SS3 RED</button>
+  <button class="area ss4" data-area="SS4">SS4 GREEN</button>
+  <button id="undo">UNDO</button>
+ </div>
+ <div class="row">
+  <div class="help">Tap boundary points around the selected area. Tap FINISH AREA when done.</div>
+  <button id="finish">FINISH AREA</button>
+  <button class="clear" id="clear">CLEAR</button>
+  <button class="save" id="save">SAVE AREAS</button>
+ </div>
+</div>
+<div class="map" id="map">
+ <div class="world" id="world">
+  <img id="img" src="fenaka-map.webp" alt="Fenaka Fonadhoo map">
+  <svg id="overlay" viewBox="0 0 6600 5444">
+   <g id="zones"></g>
+   <polyline id="draft" class="draft" points=""></polyline>
+  </svg>
+ </div>
+ <div class="zoom"><button id="plus">+</button><button id="minus">−</button><button id="home">⌂</button></div>
+ <div class="badge">AREA MARKER • tap map to draw</div>
+</div>
+<script>
+const W=6600,H=5444,map=document.getElementById('map'),world=document.getElementById('world'),zonesG=document.getElementById('zones'),draftEl=document.getElementById('draft');
+let s=1,x=0,y=0,minS=.05,maxS=6,active='SS1',draft=[],zones={SS1:[],SS2:[],SS3:[],SS4:[]},pts=new Map(),moved=false,down=null;
+function draw(){world.style.transform=`translate(${x}px,${y}px) scale(${s})`}
+function home(){const p=12;minS=Math.min((map.clientWidth-p*2)/W,(map.clientHeight-p*2)/H);s=minS;x=(map.clientWidth-W*s)/2;y=(map.clientHeight-H*s)/2;draw()}
+function zoomAt(f,cx=map.clientWidth/2,cy=map.clientHeight/2){const ns=Math.max(minS,Math.min(maxS,s*f));x=cx-(cx-x)*ns/s;y=cy-(cy-y)*ns/s;s=ns;draw()}
+function render(){
+ zonesG.innerHTML='';
+ for(const [name,arr] of Object.entries(zones)) arr.forEach(poly=>{
+   const p=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+   p.setAttribute('points',poly.map(v=>v.join(',')).join(' ')); p.setAttribute('class','zone z'+name.slice(2)); p.dataset.area=name; zonesG.appendChild(p);
+ });
+ draftEl.setAttribute('points',draft.map(v=>v.join(',')).join(' '));
+}
+document.querySelectorAll('.area').forEach(b=>b.onclick=()=>{document.querySelectorAll('.area').forEach(q=>q.classList.remove('active'));b.classList.add('active');active=b.dataset.area;draft=[];render()});
+document.getElementById('finish').onclick=()=>{if(draft.length<3){alert('Tap at least 3 boundary points.');return}zones[active].push([...draft]);draft=[];render()};
+document.getElementById('undo').onclick=()=>{if(draft.length)draft.pop();else if(zones[active].length)zones[active].pop();render()};
+document.getElementById('clear').onclick=()=>{if(confirm('Clear all marked areas?')){zones={SS1:[],SS2:[],SS3:[],SS4:[]};draft=[];render()}};
+document.getElementById('save').onclick=()=>{
+ const data={mapWidth:W,mapHeight:H,areas:zones,colors:{SS1:'red',SS2:'green',SS3:'red',SS4:'green'}};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='fenaka-areas.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+};
+document.getElementById('plus').onclick=()=>zoomAt(1.5);document.getElementById('minus').onclick=()=>zoomAt(1/1.5);document.getElementById('home').onclick=home;
+map.addEventListener('pointerdown',e=>{map.setPointerCapture(e.pointerId);pts.set(e.pointerId,{x:e.clientX,y:e.clientY});down={x:e.clientX,y:e.clientY};moved=false});
+map.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const old=pts.get(e.pointerId);pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(Math.hypot(e.clientX-down.x,e.clientY-down.y)>8)moved=true;const a=[...pts.values()];if(a.length===1&&moved){x+=e.clientX-old.x;y+=e.clientY-old.y;draw()}});
+map.addEventListener('pointerup',e=>{if(!moved&&pts.size===1){const r=map.getBoundingClientRect();const wx=(e.clientX-r.left-x)/s,wy=(e.clientY-r.top-y)/s;if(wx>=0&&wy>=0&&wx<=W&&wy<=H){draft.push([Math.round(wx),Math.round(wy)]);render()}}pts.delete(e.pointerId)});
+map.addEventListener('pointercancel',e=>pts.delete(e.pointerId));
+window.addEventListener('resize',home);document.getElementById('img').addEventListener('load',home);home();
+</script></body></html>
