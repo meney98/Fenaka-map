@@ -14661,10 +14661,10 @@
     "meterNumber": ""
   },
   "BLOCK-1630": {
-    "houseName": "",
-    "houseNumber": "",
-    "area": "",
-    "feederNumber": "",
+    "houseName": "Gahaa",
+    "houseNumber": "747",
+    "area": "PH Zone",
+    "feederNumber": "pH Feeder F",
     "distributionBox": "",
     "breakerNumber": "",
     "meterNumber": ""
@@ -18585,10 +18585,10 @@
     "meterNumber": ""
   },
   "BLOCK-2066": {
-    "houseName": "",
+    "houseName": "Dhondheeni",
     "houseNumber": "",
-    "area": "",
-    "feederNumber": "",
+    "area": "SS 02 Zone",
+    "feederNumber": "SS02 Feeder 01",
     "distributionBox": "",
     "breakerNumber": "",
     "meterNumber": ""
@@ -19422,13 +19422,13 @@
     "meterNumber": ""
   },
   "BLOCK-2159": {
-    "houseName": "",
+    "houseName": "KERCS",
     "houseNumber": "",
-    "area": "",
-    "feederNumber": "",
+    "area": "SS 02 Zone",
+    "feederNumber": "SS02 Feeder 01",
     "distributionBox": "",
     "breakerNumber": "",
-    "meterNumber": ""
+    "meterNumber": "1009"
   },
   "BLOCK-2160": {
     "houseName": "",
